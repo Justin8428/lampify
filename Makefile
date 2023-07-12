@@ -6,7 +6,7 @@ INST  = /usr/local/bin/
 CFLAG = -Wall -Ofast
 
 all:
-	$(CC) $(CFLAG) $(INC) $(LIB) -o $(BASE) $(BASE).c
+	$(CC) $(BASE).c $(CFLAG) $(INC) $(LIB) -o $(BASE) 
 
 clean:
 	rm -f $(BASE)
