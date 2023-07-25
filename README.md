@@ -42,7 +42,7 @@ This is the list of packages providing the files required to compile lampify. Be
 ## Compilation
 The compilation process is pretty simple:
 ```
-git clone https://github.com/MasterDevX/lampify.git
+git clone https://github.com/Justin8428/lampify.git
 cd lampify
 make
 ```
