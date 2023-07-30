@@ -24,7 +24,8 @@ This is the list of packages providing the files required to compile lampify. Be
   - libnotify-dev
   - make
   - gcc
-  - 
+  - bluez
+  - git
 
 ## Compilation
 The compilation process is pretty simple:
