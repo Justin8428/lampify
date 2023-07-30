@@ -7,7 +7,7 @@ The project offers the following functionality:
 - Controlling lamp brightness
 - Controlling lamp temperature
 - Sending initial setup signal
-- Sending desktop notifications
+- Sending desktop notifications (GNOME3 only)
 
 ## Lamp compatibility
 lampify was tested with the lamp **Victoria Lighting Losange/PL500**, hovewer a lot of chinese lamps have common control algorithm, so lampify should be compatible with all BLE lamps that can be controlled via Android applications from the list below (the list may be incomplete).
