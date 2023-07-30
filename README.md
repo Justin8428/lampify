@@ -76,9 +76,11 @@ To perform the initial setup:
 - Within a few seconds after powering the lamp on, send a setup signal from your device:
 
   ```
-  lampify q setup
+  sudo lampify v setup
   ```
 - If you see the lamp flashing, the connection is established
+
+**sudo permissions are required to access the ble stack on modern linux**
 
 ### Command examples
 Turn the lamp on (without notification):
