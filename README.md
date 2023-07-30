@@ -27,7 +27,8 @@ This is the list of packages providing the files required to compile lampify. Be
   - bluez
   - git
 
-Depending on your distro / hardware you may need to install drivers / firmware for your bluetooth card. (Older) Intel cards seem to work out of the box. e.g Broadcom users see https://github.com/winterheart/broadcom-bt-firmware
+Depending on your distro / hardware you may need to install drivers / firmware for your bluetooth card. (Older) Intel cards seem to work out of the box. e.g Broadcom users see https://github.com/winterheart/broadcom-bt-firmware.
+The Intel AX210 does not appear to be working.
 
 
 ## Compilation
