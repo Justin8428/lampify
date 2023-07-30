@@ -12,32 +12,19 @@ The project offers the following functionality:
 ## Lamp compatibility
 lampify was tested with the lamp **Victoria Lighting Losange/PL500**, hovewer a lot of chinese lamps have common control algorithm, so lampify should be compatible with all BLE lamps that can be controlled via Android applications from the list below (the list may be incomplete).
 
-- Developed by [XuRenNan](https://play.google.com/store/apps/developer?id=XuRenNan)
   - [LampSmart Pro](https://play.google.com/store/apps/details?id=com.jingyuan.lamp)
-  - [FanLamp Pro](https://play.google.com/store/apps/details?id=com.jingyuan.fan_lamp)
-  - [ApplianceSmart](https://play.google.com/store/apps/details?id=com.jingyuan.smart_home)
-  - [Vmax smart](https://play.google.com/store/apps/details?id=com.jingyuan.vmax_smart)
-  
-  
-- Developed by [ShangHai All Link Microelectronics Co., Ltd](https://play.google.com/store/apps/developer?id=ShangHai+All+Link+Microelectronics+Co.,+Ltd)
-  - [FanLamp](https://play.google.com/store/apps/details?id=com.fan.lamp)
-  - [ControlSwitch](https://play.google.com/store/apps/details?id=com.alllink.power_switch)
-  - [Lamp Smart Pro-Soft Lighting](https://play.google.com/store/apps/details?id=com.alllink.smart_lighting)
+
+Also tested on "Jaycomey Dimmable Ceiling Light,4 Squares Modern LED Ceiling Lamps with Remote Control,80W Acrylic Flush Mount Ceiling Light Fixture for Living Dining Room Bedroom Kitchen(Black)" as available on Amazon
 
 ## Dependencies
 This is the list of packages providing the files required to compile lampify. Be aware that package names usually do vary across different linux distributions.
 
-- Arch Linux
-  - bluez-libs
-  - libnotify
-  - make
-  - gcc
-
-- Debian / Ubuntu
+- Debian 12
   - libbluetooth-dev
   - libnotify-dev
   - make
   - gcc
+  - 
 
 ## Compilation
 The compilation process is pretty simple:
