@@ -114,7 +114,7 @@ int CRC16 (char* bArr, int offset) {
 
 char* buildMasterControl () {
     char hostName[1024] = "";
-    gethostname(hostName, 1024);
+    gethostname(hostName, 1024); // get hostname for unique id, should be able to change to control multiple lamps???
     int crc = CRC16(hostName, 8);
     static char masterControl[2];
     masterControl[0] = (crc >> 8) & 255;
