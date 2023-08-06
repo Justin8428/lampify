@@ -9,7 +9,6 @@ The project offers the following functionality:
 - Controlling lamp temperature
 - Sending initial setup signal
 - **Multiple lamp support** via manually specifying unique id
-- Sending desktop notifications (GNOME3 only; notification support to be removed soon)
 
 ## Lamp compatibility
 lampify-updated should work with at least some lamps (that are non-RGB, dimmable, cool/warm only) that use the following app
