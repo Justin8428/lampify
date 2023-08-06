@@ -8,7 +8,7 @@
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
-#define VERSION "1.0.0"
+#define VERSION "2.0.0"
 
 char BRIGHTNESS_LEVELS[10] = {
     0x1A, 0x33, 0x4C, 0x66, 0x7F,
@@ -112,9 +112,10 @@ int CRC16 (char* bArr, int offset) {
     return crc;
 }
 
-char* buildMasterControl () {
+char* buildMasterControl (char* uniqueid) {
     char hostName[1024] = "";
-    gethostname(hostName, 1024); // get hostname for unique id, should be able to change to control multiple lamps???
+    //gethostname(hostName, 1024); // get hostname for unique id, should be able to change to control multiple lamps???
+    strcpy(hostName, uniqueid); // use the uniqueid provided by user in place of hostname
     int crc = CRC16(hostName, 8);
     static char masterControl[2];
     masterControl[0] = (crc >> 8) & 255;
@@ -122,8 +123,8 @@ char* buildMasterControl () {
     return masterControl;
 }
 
-char* buildPacket (char command, char arg1, char arg2) {
-    char* mControl = buildMasterControl();
+char* buildPacket (char command, char arg1, char arg2, char* uniqueid) {
+    char* mControl = buildMasterControl(uniqueid);
     char msgBase[25];
     static char packet[32];
     for (int i = 0; i < 25; i++) {
@@ -203,7 +204,7 @@ int sendPacket (char* bArr) {
     return 0;
 }
 
-int decodeCommand (char* mode, char* command, char* arg) {
+int decodeCommand (char* mode, char* uniqueid, char* command, char* arg) {
     if (!mode || (strcmp(mode, "q") && strcmp(mode, "v"))) {
         return -1;
     }
@@ -211,31 +212,31 @@ int decodeCommand (char* mode, char* command, char* arg) {
     char ntfText[128] = "";
     if (command) {
         if (!strcmp(command, "setup")) {
-            char* mControl = buildMasterControl();
-            packet = buildPacket(0x28, mControl[0], mControl[1]);
+            char* mControl = buildMasterControl(uniqueid);
+            packet = buildPacket(0x28, mControl[0], mControl[1], uniqueid);
             sprintf(ntfText, "Connecting to the lamp");
         }
         if (!strcmp(command, "on")) {
-            packet = buildPacket(0x10, 0x00, 0x00);
+            packet = buildPacket(0x10, 0x00, 0x00, uniqueid);
             sprintf(ntfText, "Turning the lamp on");
         }
         if (!strcmp(command, "off")) {
-            packet = buildPacket(0x11, 0x00, 0x00);
+            packet = buildPacket(0x11, 0x00, 0x00, uniqueid);
             sprintf(ntfText, "Turning the lamp off");
         }
         if (arg) {
             int index = atoi(arg) % 10;
             char level = BRIGHTNESS_LEVELS[index];
             if (!strcmp(command, "cold")) {
-                packet = buildPacket(0x21, level, 0x00);
+                packet = buildPacket(0x21, level, 0x00, uniqueid);
                 sprintf(ntfText, "Setting cold brightness to %d", index);
             }
             if (!strcmp(command, "warm")) {
-                packet = buildPacket(0x21, 0x00, level);
+                packet = buildPacket(0x21, 0x00, level, uniqueid);
                 sprintf(ntfText, "Setting warm brightness to %d", index);
             }
             if (!strcmp(command, "dual")) {
-                packet = buildPacket(0x21, level, level);
+                packet = buildPacket(0x21, level, level, uniqueid);
                 sprintf(ntfText, "Setting dual brightness to %d", index);
             }
         }
@@ -246,9 +247,9 @@ int decodeCommand (char* mode, char* command, char* arg) {
             NotifyNotification* ntf = notify_notification_new(ntfText, NULL, NULL);
             notify_notification_set_timeout(ntf, 5000);
             if (!notify_notification_show(ntf, NULL)) {
-                fprintf(stderr, "[W] Failed to send notification!\n");
+                fprintf(stderr, "[W] Failed to send GNOME notification!\n");
             }
-        }
+         
         fprintf(stdout, "[I] %s\n", ntfText);
         return sendPacket(packet);
     }
@@ -256,25 +257,31 @@ int decodeCommand (char* mode, char* command, char* arg) {
 }
 
 void printUsage (char* basename) {
-    fprintf(stderr, "Lampify %s by MasterDevX\n", VERSION);
-    fprintf(stderr, "Made in Ukraine\n\n");
+    fprintf(stderr, "Lampify %s by MasterDevX, Justin8428\n", VERSION);
+    fprintf(stderr, "2020, 2023\n\n");
     fprintf(stderr, "Usage:\n");
-    fprintf(stderr, "%s <mode> <action> [parameter]\n\n", basename);
+    fprintf(stderr, "%s <mode> <uniqueid> <action> [parameter]\n\n", basename);
     fprintf(stderr, "Available modes:\n");
     fprintf(stderr, "q               quiet (without notifications)\n");
     fprintf(stderr, "v               verbose (with notifications)\n\n");
+    fprintf(stderr, "Allowable uniqueid:\n");
+    fprintf(stderr, "Unique id can be any string (up to 1024 characters)\n");
+    fprintf(stderr, "that is made up of capital letters and numbers without spaces.\n");
+    fprintf(stderr, "Example: LAMP01\n\n");
     fprintf(stderr, "Available actions:\n");
     fprintf(stderr, "setup           connect to the lamp\n");
     fprintf(stderr, "on              turn the lamp on\n");
     fprintf(stderr, "off             turn the lamp off\n");
     fprintf(stderr, "cold  <0..9>    set cold brightness\n");
     fprintf(stderr, "warm  <0..9>    set warm brightness\n");
-    fprintf(stderr, "dual  <0..9>    set dual brightness\n");
+    fprintf(stderr, "dual  <0..9>    set dual brightness\n\n");
+
+
 }
 
 int main (int argc, char** argv) {
     srand(clock());
-    int ret = decodeCommand(argv[1], argv[2], argv[3]);
+    int ret = decodeCommand(argv[1], argv[2], argv[3], argv[4]);
     if (ret != 0) {
         if (ret < 0){
             printUsage(argv[0]);
