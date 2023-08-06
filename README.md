@@ -42,10 +42,10 @@ Your bluetooth card needs to support at least Bluetooth v4.0 LE and have working
 
 Depending on your distro / hardware you may need to install drivers / firmware for your bluetooth card. (Older) Intel cards seem to work out of the box. e.g Broadcom users see https://github.com/winterheart/broadcom-bt-firmware.
 
-Working cards:
+Working cards (not exhaustive):
 
  - Intel AC-8265
- - Broadcome BCM20702A0
+ - Broadcom BCM20702A0
  - Qualcomm Atheros QCA9377
    
 The Intel AX210 does not appear to be working.
