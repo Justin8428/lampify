@@ -98,6 +98,8 @@ dual  <0..9>    set dual brightness
 
 ```
 
+Currently there is not much difference between quiet and verbose. Verbose just prints extra messages to the console.
+
 ### Initial setup
 Before you can control your lamp, you have to perform an initial setup so the lamp will remember a unique ID that you specify. This unique ID should be made up of capital letters and numbers without spaces. Once you have setup this unique ID, you do not need to re-setup the lamp as long as you remember what this ID is!
 
@@ -116,22 +118,22 @@ To perform the initial setup:
 To reiterate **sudo permissions are required to access the ble stack on modern linux**
 
 ### Command examples
-Turn the lamp on (without notification):
+Turn the lamp on (quiet):
 ```
 sudo lampify q LAMP01TEST on
 ```
 
-Turn the lamp off (with notification):
+Turn the lamp off (verbose):
 ```
 sudo lampify v LAMP01TEST off
 ```
 
-Set warm temperature and brightness to 5 (without notification):
+Set warm temperature and brightness to 5 (quiet):
 ```
 sudo lampify q LAMP01TEST warm 5
 ```
 
-Set cold temperature and brightness to 2 (with notification):
+Set cold temperature and brightness to 2 (verbose):
 ```
 sudo lampify v LAMP01TEST cold 2
 ```
