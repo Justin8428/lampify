@@ -1,5 +1,5 @@
 CC    = gcc `pkg-config --cflags --libs glib-2.0`
-LIB   = -lbluetooth -lnotify
+LIB   = -lbluetooth
 INC   = -I /usr/include/glib-2.0 -I /usr/lib/glib-2.0/include -I /usr/include/gdk-pixbuf-2.0
 BASE  = lampify
 INST  = /usr/local/bin/
