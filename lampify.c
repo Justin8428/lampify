@@ -8,7 +8,7 @@
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
-#define VERSION "2.0.0"
+#define VERSION "2.1.0"
 
 char BRIGHTNESS_LEVELS[10] = {
     0x1A, 0x33, 0x4C, 0x66, 0x7F,
@@ -214,56 +214,49 @@ int decodeCommand (char* mode, char* uniqueid, char* command, char* arg) {
         if (!strcmp(command, "setup")) {
             char* mControl = buildMasterControl(uniqueid);
             packet = buildPacket(0x28, mControl[0], mControl[1], uniqueid);
-            sprintf(ntfText, "Connecting to the lamp");
+            sprintf(ntfText, "Connecting to the lamp %s", uniqueid);
         }
         if (!strcmp(command, "on")) {
             packet = buildPacket(0x10, 0x00, 0x00, uniqueid);
-            sprintf(ntfText, "Turning the lamp on");
+            sprintf(ntfText, "Turning on the lamp %s", uniqueid);
         }
         if (!strcmp(command, "off")) {
             packet = buildPacket(0x11, 0x00, 0x00, uniqueid);
-            sprintf(ntfText, "Turning the lamp off");
+            sprintf(ntfText, "Turning off the lamp %s", uniqueid);
         }
         if (arg) {
             int index = atoi(arg) % 10;
             char level = BRIGHTNESS_LEVELS[index];
             if (!strcmp(command, "cold")) {
                 packet = buildPacket(0x21, level, 0x00, uniqueid);
-                sprintf(ntfText, "Setting cold brightness to %d", index);
+                sprintf(ntfText, "Setting cold brightness to %d for lamp %s", index, uniqueid);
             }
             if (!strcmp(command, "warm")) {
                 packet = buildPacket(0x21, 0x00, level, uniqueid);
-                sprintf(ntfText, "Setting warm brightness to %d", index);
+                sprintf(ntfText, "Setting warm brightness to %d for lamp %s", index, uniqueid);
             }
             if (!strcmp(command, "dual")) {
                 packet = buildPacket(0x21, level, level, uniqueid);
-                sprintf(ntfText, "Setting dual brightness to %d", index);
+                sprintf(ntfText, "Setting dual brightness to %d for lamp %s", index, uniqueid);
             }
         }
     }
     if (packet) {
         if (!strcmp(mode, "v")) {
-            notify_init("Lampify");
-            NotifyNotification* ntf = notify_notification_new(ntfText, NULL, NULL);
-            notify_notification_set_timeout(ntf, 5000);
-            if (!notify_notification_show(ntf, NULL)) {
-                fprintf(stderr, "[W] Failed to send GNOME notification!\n");
+            fprintf(stdout, "[I] %s\n", ntfText);
+            return sendPacket(packet);
             }
-         
-        fprintf(stdout, "[I] %s\n", ntfText);
-        return sendPacket(packet);
     }
     return -1;
 }
 
 void printUsage (char* basename) {
     fprintf(stderr, "Lampify %s by MasterDevX, Justin8428\n", VERSION);
-    fprintf(stderr, "2020, 2023\n\n");
     fprintf(stderr, "Usage:\n");
     fprintf(stderr, "%s <mode> <uniqueid> <action> [parameter]\n\n", basename);
     fprintf(stderr, "Available modes:\n");
-    fprintf(stderr, "q               quiet (without notifications)\n");
-    fprintf(stderr, "v               verbose (with notifications)\n\n");
+    fprintf(stderr, "q               quiet\n");
+    fprintf(stderr, "v               verbose\n\n");
     fprintf(stderr, "Allowable uniqueid:\n");
     fprintf(stderr, "Unique id can be any string (up to 1024 characters)\n");
     fprintf(stderr, "that is made up of capital letters and numbers without spaces.\n");
