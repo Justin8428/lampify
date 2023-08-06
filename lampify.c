@@ -249,7 +249,7 @@ int decodeCommand (char* mode, char* uniqueid, char* command, char* arg) {
             if (!notify_notification_show(ntf, NULL)) {
                 fprintf(stderr, "[W] Failed to send GNOME notification!\n");
             }
-         
+        }
         fprintf(stdout, "[I] %s\n", ntfText);
         return sendPacket(packet);
     }
