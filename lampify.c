@@ -7,7 +7,7 @@
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
-#define VERSION "2.1.0"
+#define VERSION "2.9.0 BETA"
 
 char BRIGHTNESS_LEVELS[11] = {
     0x00, 0x1A, 0x33, 0x4C, 0x66, 0x7F,
@@ -265,10 +265,7 @@ void printUsage (char* basename) {
     fprintf(stderr, "setup           connect to the lamp\n");
     fprintf(stderr, "on              turn the lamp on\n");
     fprintf(stderr, "off             turn the lamp off\n");
-    fprintf(stderr, "cold  <0..9>    set cold brightness\n");
-    fprintf(stderr, "warm  <0..9>    set warm brightness\n");
-    fprintf(stderr, "dual  <0..9>    set dual brightness\n\n");
-
+    fprintf(stderr, "dualcustom <0..10> <0..10>   set brightness of cold and warm separately\n\n");
 
 }
 
