@@ -229,7 +229,7 @@ int decodeCommand (char* mode, char* uniqueid, char* command, char* arg) {
             char level_warm = BRIGHTNESS_LEVELS[11 - index];
             if (!strcmp(command, "dualcustom")) {
                 packet = buildPacket(0x21, level_cold, level_warm, uniqueid);
-                sprintf(ntfText, "Setting dualcustom brightness to cold %s warm %s for lamp %s", level_cold, level_warm, uniqueid);
+                sprintf(ntfText, "Setting dualcustom brightness to cold %i warm %i for lamp %s", level_cold, level_warm, uniqueid);
             }
             // if (!strcmp(command, "warm")) {
             //     packet = buildPacket(0x21, 0x00, level, uniqueid);
