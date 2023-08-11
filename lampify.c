@@ -203,7 +203,7 @@ int sendPacket (char* bArr) {
     return 0;
 }
 
-int decodeCommand (char* mode, char* uniqueid, char* command, char* arg) {
+int decodeCommand (char* mode, char* uniqueid, char* command, char* argcold, char*argwarm) {
     if (!mode || (strcmp(mode, "q") && strcmp(mode, "v"))) {
         return -1;
     }
@@ -224,12 +224,12 @@ int decodeCommand (char* mode, char* uniqueid, char* command, char* arg) {
             sprintf(ntfText, "Turning off the lamp %s", uniqueid);
         }
         if (arg) {
-            int index_cold = atoi(arg) % 11; // modulo 11 for 11 values of BRIGHTNESS_LEVEL
-            int index_warm = 11 - index_cold;
+            int index_cold = atoi(argcold) % 11; // modulo 11 for 11 values of BRIGHTNESS_LEVEL
+            int index_warm = atoi(argwarm) % 11;
             char level_cold = BRIGHTNESS_LEVELS[index_cold];
             char level_warm = BRIGHTNESS_LEVELS[index_warm];
             if (!strcmp(command, "dualcustom")) {
-                packet = buildPacket(0x21, level_cold, level_warm, uniqueid);
+                packet = buildPacket(0x21, level_cold, level_warm, uniqueid); // e.g. for pure warm level 6 put option 0 6
                 sprintf(ntfText, "Setting dualcustom brightness to cold %i warm %i for lamp %s", level_cold, level_warm, uniqueid);
             }
             // if (!strcmp(command, "warm")) {
@@ -272,7 +272,7 @@ void printUsage (char* basename) {
 
 int main (int argc, char** argv) {
     srand(clock());
-    int ret = decodeCommand(argv[1], argv[2], argv[3], argv[4]);
+    int ret = decodeCommand(argv[1], argv[2], argv[3], argv[4], argv[5]);
     if (ret != 0) {
         if (ret < 0){
             printUsage(argv[0]);
