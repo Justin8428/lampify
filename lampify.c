@@ -203,7 +203,7 @@ int sendPacket (char* bArr) {
     return 0;
 }
 
-int decodeCommand (char* mode, char* uniqueid, char* command, char* argcold, char*argwarm) {
+int decodeCommand (char* mode, char* uniqueid, char* command, char* argcold, char* argwarm) {
     if (!mode || (strcmp(mode, "q") && strcmp(mode, "v"))) {
         return -1;
     }
@@ -223,7 +223,7 @@ int decodeCommand (char* mode, char* uniqueid, char* command, char* argcold, cha
             packet = buildPacket(0x11, 0x00, 0x00, uniqueid);
             sprintf(ntfText, "Turning off the lamp %s", uniqueid);
         }
-        if (arg) {
+        if (argcold && argwarm) {
             int index_cold = atoi(argcold) % 11; // modulo 11 for 11 values of BRIGHTNESS_LEVEL
             int index_warm = atoi(argwarm) % 11;
             char level_cold = BRIGHTNESS_LEVELS[index_cold];
