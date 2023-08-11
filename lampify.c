@@ -224,9 +224,10 @@ int decodeCommand (char* mode, char* uniqueid, char* command, char* arg) {
             sprintf(ntfText, "Turning off the lamp %s", uniqueid);
         }
         if (arg) {
-            int index = atoi(arg) % 11; // modulo 11 for 11 values of BRIGHTNESS_LEVEL
-            char level_cold = BRIGHTNESS_LEVELS[index];
-            char level_warm = BRIGHTNESS_LEVELS[11 - index];
+            int index_cold = atoi(arg) % 11; // modulo 11 for 11 values of BRIGHTNESS_LEVEL
+            int index_warm = 11 - index_cold;
+            char level_cold = BRIGHTNESS_LEVELS[index_cold];
+            char level_warm = BRIGHTNESS_LEVELS[index_warm];
             if (!strcmp(command, "dualcustom")) {
                 packet = buildPacket(0x21, level_cold, level_warm, uniqueid);
                 sprintf(ntfText, "Setting dualcustom brightness to cold %i warm %i for lamp %s", level_cold, level_warm, uniqueid);
