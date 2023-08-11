@@ -9,8 +9,8 @@
 
 #define VERSION "2.1.0"
 
-char BRIGHTNESS_LEVELS[10] = {
-    0x1A, 0x33, 0x4C, 0x66, 0x7F,
+char BRIGHTNESS_LEVELS[11] = {
+    0x00, 0x1A, 0x33, 0x4C, 0x66, 0x7F,
     0x99, 0xB2, 0xCC, 0xE5, 0xFF
 };
 
@@ -224,20 +224,21 @@ int decodeCommand (char* mode, char* uniqueid, char* command, char* arg) {
             sprintf(ntfText, "Turning off the lamp %s", uniqueid);
         }
         if (arg) {
-            int index = atoi(arg) % 10;
-            char level = BRIGHTNESS_LEVELS[index];
-            if (!strcmp(command, "cold")) {
-                packet = buildPacket(0x21, level, 0x00, uniqueid);
-                sprintf(ntfText, "Setting cold brightness to %d for lamp %s", index, uniqueid);
+            int index = atoi(arg) % 11; // modulo 11 for 11 values of BRIGHTNESS_LEVEL
+            char level_cold = BRIGHTNESS_LEVELS[index];
+            char level_warm = BRIGHTNESS_LEVELS[11 - index];
+            if (!strcmp(command, "dualcustom")) {
+                packet = buildPacket(0x21, level_cold, level_warm, uniqueid);
+                sprintf(ntfText, "Setting dualcustom brightness to cold %s warm %s for lamp %s", level_cold, level_warm, uniqueid);
             }
-            if (!strcmp(command, "warm")) {
-                packet = buildPacket(0x21, 0x00, level, uniqueid);
-                sprintf(ntfText, "Setting warm brightness to %d for lamp %s", index, uniqueid);
-            }
-            if (!strcmp(command, "dual")) {
-                packet = buildPacket(0x21, level, level, uniqueid);
-                sprintf(ntfText, "Setting dual brightness to %d for lamp %s", index, uniqueid);
-            }
+            // if (!strcmp(command, "warm")) {
+            //     packet = buildPacket(0x21, 0x00, level, uniqueid);
+            //     sprintf(ntfText, "Setting warm brightness to %d for lamp %s", index, uniqueid);
+            // }
+            // if (!strcmp(command, "dual")) {
+            //     packet = buildPacket(0x21, level, level, uniqueid);
+            //     sprintf(ntfText, "Setting dual brightness to %d for lamp %s", index, uniqueid);
+            // }
         }
     }
     if (packet) {
