@@ -40,13 +40,14 @@ Ubuntu (20.04 and 22.04) have been tested to not work.
 ### Hardware
 Your bluetooth card needs to support at least Bluetooth v4.0 LE and have working drivers / firmware for Linux.
 
-Depending on your distro / hardware you may need to install drivers / firmware for your bluetooth card. (Older) Intel cards seem to work out of the box. e.g Broadcom users see https://github.com/winterheart/broadcom-bt-firmware.
+Depending on your distro / hardware you may need to install drivers / firmware for your bluetooth card. 
 
 Working cards (not exhaustive):
 
  - Intel AC-8265
- - Broadcom BCM20702A0
+ - Broadcom BCM20702A0, see https://github.com/winterheart/broadcom-bt-firmware
  - Qualcomm Atheros QCA9377
+ - Realtek RTL8761BU (most "cheap" eBay USB BT dongles) via `firmware-realtek` package
    
 The Intel AX210 does not appear to be working.
 
